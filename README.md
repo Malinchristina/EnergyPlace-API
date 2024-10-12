@@ -17,6 +17,7 @@ This is the backend services for the EnergyPlace project. It is designed to hand
 
 <details>
   <summary>Click to view ERD</summary>
+  
   ![ERD](documentation/readme_images/erd.png)
 </details>
 

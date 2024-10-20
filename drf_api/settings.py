@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary',
     'rest_framework',
+    'django_countries',
 
     # my apps
     'profiles',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'comments',
     'likes',
     'followers',
+    'locations',
 ]
 
 MIDDLEWARE = [

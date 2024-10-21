@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import Post
+from locations.models import Location
+from locations.serializers import LocationSerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -7,7 +9,7 @@ class PostSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
-    # add location and category fields
+    location = LocationSerializer()
     # add likes and comments fields
 
     def validate_image(self, value):
@@ -27,22 +29,28 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return request.user == obj.owner
 
+    def create(self, validated_data):
+        # Handle location creation manually
+        location_data = validated_data.pop('location')
+        location, created = Location.objects.get_or_create(**location_data)
+        post = Post.objects.create(location=location, **validated_data)
+        return post
+
+    def update(self, instance, validated_data):
+        location_data = validated_data.pop('location', None)
+        if location_data:
+            Location.objects.filter(id=instance.location.id).update(**location_data)
+
+        # Refresh instance to ensure it reflects updated related fields if necessary
+        instance.refresh_from_db()
+        return super().update(instance, validated_data)
+
     class Meta:
         model = Post
         fields = [
-            'id',
-            'owner',
-            'is_owner',
-            'profile_id',
-            'profile_image',
-            'title',
-            'image',
-            'content',
-            'created_at',
-            'updated_at',
-            # 'location',
-            # 'category',
-            # 'likes',
-            # 'comments',          
+            'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
+            'title', 'image', 'content', 'created_at', 'updated_at',
+            'location', # 'category', # 'likes',# 'comments', 
         ]
+
     

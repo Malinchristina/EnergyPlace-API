@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from locations.models import Location
+
 
 # Create your models here.
 
@@ -17,9 +19,9 @@ class Post(models.Model):
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # location = models.ForeignKey(
-    #     'Location', on_delete=models.SET_NULL, null=True, blank=True
-    # )
+    location = models.ForeignKey(
+        'locations.Location', on_delete=models.SET_NULL, null=True, blank=False
+    )
     # category = models.ForeignKey(
     #     'Category', on_delete=models.SET_NULL, null=True, blank=True
     # )

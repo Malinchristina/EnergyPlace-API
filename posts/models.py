@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from locations.models import Location
+from categories.models import Category
 
 
 # Create your models here.
@@ -22,9 +23,9 @@ class Post(models.Model):
     location = models.ForeignKey(
         'locations.Location', on_delete=models.SET_NULL, null=True, blank=False
     )
-    # category = models.ForeignKey(
-    #     'Category', on_delete=models.SET_NULL, null=True, blank=True
-    # )
+    category = models.ForeignKey(
+        'categories.Category', on_delete=models.SET_NULL, null=True, blank=False
+    )
 
     class Meta:
         ordering = ['-created_at']

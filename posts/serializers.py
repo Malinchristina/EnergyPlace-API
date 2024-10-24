@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from .models import Post
 from locations.models import Location
+from categories.models import Category
 from locations.serializers import LocationSerializer
+from categories.serializers import CategorySerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -10,6 +12,9 @@ class PostSerializer(serializers.ModelSerializer):
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     location = LocationSerializer()
+    category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
+
+    # category = CategorySerializer()
     # add likes and comments fields
 
     def validate_image(self, value):
@@ -32,25 +37,39 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Handle location creation manually
         location_data = validated_data.pop('location')
+        category_data= validated_data.pop('category')
+
         location, created = Location.objects.get_or_create(**location_data)
-        post = Post.objects.create(location=location, **validated_data)
+        category, _ = Category.objects.get_or_create(name=category_data)
+        
+        post = Post.objects.create(
+            location=location, category=category, **validated_data
+        )
         return post
 
     def update(self, instance, validated_data):
         location_data = validated_data.pop('location', None)
         if location_data:
-            Location.objects.filter(id=instance.location.id).update(**location_data)
+            Location.objects.filter(
+                id=instance.location.id).update(**location_data)
 
-        # Refresh instance to ensure it reflects updated related fields if necessary
+        category_data = validated_data.pop('category', None)
+        if category_data:
+            Category.objects.filter(
+                id=instance.category.id).update(**category_data)
+
+        # Refresh instance to ensure it reflects 
+        # updated related fields if necessary
         instance.refresh_from_db()
         return super().update(instance, validated_data)
+
 
     class Meta:
         model = Post
         fields = [
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
             'title', 'image', 'content', 'created_at', 'updated_at',
-            'location', # 'category', # 'likes',# 'comments', 
+            'location', 'category', # 'likes',# 'comments', 
         ]
 
     

@@ -14,7 +14,6 @@ class PostSerializer(serializers.ModelSerializer):
     location = LocationSerializer()
     category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
 
-    # category = CategorySerializer()
     # add likes and comments fields
 
     def validate_image(self, value):
@@ -34,6 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return request.user == obj.owner
 
+      #Create location and category fields
     def create(self, validated_data):
         # Handle location creation manually
         location_data = validated_data.pop('location')
@@ -41,13 +41,15 @@ class PostSerializer(serializers.ModelSerializer):
 
         location, created = Location.objects.get_or_create(**location_data)
         category, _ = Category.objects.get_or_create(name=category_data)
-        
+
         post = Post.objects.create(
             location=location, category=category, **validated_data
         )
         return post
 
+    # Update location and category fields
     def update(self, instance, validated_data):
+
         location_data = validated_data.pop('location', None)
         if location_data:
             Location.objects.filter(
@@ -55,13 +57,15 @@ class PostSerializer(serializers.ModelSerializer):
 
         category_data = validated_data.pop('category', None)
         if category_data:
-            Category.objects.filter(
-                id=instance.category.id).update(**category_data)
+            category, created = Category.objects.get_or_create(name=category_data)
+            instance.category = category
+        
+        instance.save()
 
-        # Refresh instance to ensure it reflects 
-        # updated related fields if necessary
         instance.refresh_from_db()
-        return super().update(instance, validated_data)
+
+        updated_instance = super().update(instance, validated_data)
+        return updated_instance
 
 
     class Meta:

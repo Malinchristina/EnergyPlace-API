@@ -15,8 +15,9 @@ class PostSerializer(serializers.ModelSerializer):
     location = LocationSerializer()
     category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
     like_id = serializers.SerializerMethodField()
-
-    # add likes and comments fields
+    comments_count = serializers.ReadOnlyField()
+    likes_count = serializers.ReadOnlyField()
+    
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
@@ -84,7 +85,7 @@ class PostSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
             'title', 'image', 'content', 'created_at', 'updated_at',
-            'location', 'category', 'like_id', # 'comments', 
+            'location', 'category', 'like_id', 'comments_count', 'likes_count'
         ]
 
     

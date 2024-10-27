@@ -21,6 +21,9 @@ class LocationList(generics.ListCreateAPIView):
         if not queryset.exists():
             return Response(
                 {"message": "No posts in this country."}, status=200)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=200)
 
 
 class LocationDetail(generics.RetrieveUpdateAPIView):

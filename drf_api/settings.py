@@ -61,8 +61,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
+    os.environ.get('ALLOWED_HOSTS'),
     'localhost',
-    'energyplace-be-f35f3084f662.herokuapp.com/',
 ]
 
 

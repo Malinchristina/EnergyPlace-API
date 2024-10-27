@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from .models import Post
+from .models import Category
+from .models import Location
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -57,5 +59,46 @@ class PostDetailViewTest(APITestCase):
         response = self.client.put('/posts/2/', {'title': 'Title 2 Updated'})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         
-        
-    
+
+# Test written by me for Category and Location
+class PostCreateUpdateWithCategoryLocationTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='anna', password='12345')
+        self.client.login(username='anna', password='12345')
+        self.category = Category.objects.create(name='Category 1')
+        self.location = Location.objects.create(name='Location 1')
+
+    def test_create_post_with_category_and_location(self):
+        response = self.client.post('/posts/', {
+            'title': 'Title 1',
+            'content': 'Content 1',
+            'category': 'nature',
+            'location': {'name': self.location.name, 'country': 'US'}
+        },
+        format='json'  # Use JSON format for the request
+        )
+
+        print(response.data)
+
+        post = Post.objects.first()
+        self.assertIsNotNone(post, "Post should have been created")
+        self.assertEqual(post.category.name, 'nature')
+        self.assertEqual(post.location.name, 'Location 1')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_post_with_category_and_location(self):
+        post = Post.objects.create(owner=self.user, title='Title 1', content='Content 1')
+        response = self.client.put(f'/posts/{post.id}/', {
+            'title': 'Title 1 Updated',
+            'content': 'Content 1 Updated',
+            'category': 'nature',
+            'location': {'name': self.location.name, 'country': 'US'}
+        },
+        format='json'  # Use JSON format for the request
+        )
+
+        post.refresh_from_db()
+        self.assertEqual(post.title, 'Title 1 Updated')
+        self.assertEqual(post.category.name, 'nature')
+        self.assertEqual(post.location.name, 'Location 1')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

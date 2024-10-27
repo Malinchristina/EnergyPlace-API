@@ -62,7 +62,7 @@ DEBUG = 'DEV' in os.environ
 
 ALLOWED_HOSTS = [
     'localhost',
-    'https://energyplace-be-f35f3084f662.herokuapp.com/',
+    'energyplace-be-f35f3084f662.herokuapp.com/',
 ]
 
 

@@ -52,19 +52,25 @@ class PostSerializer(serializers.ModelSerializer):
 
     # Update location and category fields
     def update(self, instance, validated_data):
-
         location_data = validated_data.pop('location', None)
         if location_data:
-            Location.objects.filter(
-                id=instance.location.id).update(**location_data)
+            if instance.location:
+                # Update the existing location
+                Location.objects.filter(id=instance.location.id).update(**location_data)
+            else:
+                # Create a new location if there is no existing one
+                instance.location = Location.objects.create(**location_data)
+        else:
+            # Handle the case where no location data is provided
+            raise serializers.ValidationError("Location data is required.")
 
         category_data = validated_data.pop('category', None)
         if category_data:
             category, created = Category.objects.get_or_create(name=category_data)
             instance.category = category
-        
-        instance.save()
 
+        # Save and update
+        instance.save()
         instance.refresh_from_db()
 
         updated_instance = super().update(instance, validated_data)

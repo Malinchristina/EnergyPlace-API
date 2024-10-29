@@ -124,6 +124,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.codeinstitute-ide\.net$",
     r"^https://.*\.gitpod\.io$",
     r"^https://.*\.herokuapp\.com$",
+    r"^http://192\.168\.1\.205:3000$",
+    
 ]
 CORS_ALLOW_CREDENTIALS = True
 

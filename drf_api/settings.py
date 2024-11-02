@@ -66,6 +66,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'energyplace-be-f35f3084f662.herokuapp.com',
     'localhost:3000',
+    'malinchrist-energyplace-dshfc75bd1z.ws.codeinstitute-ide.net',
+    'malinchrist-energyplace-sq0uwchx1z5.ws.codeinstitute-ide.net',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -73,6 +75,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000',
     'http://localhost:3000',
     'https://energyplace-be-f35f3084f662.herokuapp.com',
+    'https://malinchrist-energyplace-dshfc75bd1z.ws.codeinstitute-ide.net',
+    'https://malinchrist-energyplace-sq0uwchx1z5.ws.codeinstitute-ide.net',
 ]
 
 

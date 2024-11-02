@@ -64,6 +64,8 @@ ALLOWED_HOSTS = [
     os.environ.get('ALLOWED_HOST'),
     'localhost',
     '127.0.0.1',
+    'energyplace-be-f35f3084f662.herokuapp.com',
+    'localhost:3000',
 ]
 
 CSRF_TRUSTED_ORIGINS = [

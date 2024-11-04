@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import Post
-from locations.models import Location
-from categories.models import Category
+# from locations.models import Location
+# from categories.models import Category
 from likes.models import Like
-from locations.serializers import LocationSerializer
-from categories.serializers import CategorySerializer
+# from locations.serializers import LocationSerializer
+# from categories.serializers import CategorySerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -92,7 +92,8 @@ class PostSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
             'title', 'image', 'content', 'created_at', 'updated_at',
-            'location', 'category', 'like_id', 'comments_count', 'likes_count'
+            'like_id', 'comments_count', 'likes_count',
+            #'location', #'category', 
         ]
 
     

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from locations.models import Location
-from categories.models import Category
+# from locations.models import Location
+# from categories.models import Category
 
 
 # Create your models here.

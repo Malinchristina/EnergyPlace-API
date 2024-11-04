@@ -12,8 +12,9 @@ class PostSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
-    location = LocationSerializer()
-    category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
+    # Revisit after core funtions are working
+    # location = LocationSerializer()
+    # category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
@@ -35,46 +36,46 @@ class PostSerializer(serializers.ModelSerializer):
     def get_is_owner(self, obj):
         request = self.context.get('request')
         return request.user == obj.owner
+    # Revisit after core functions are working
+    #   #Create location and category fields
+    # def create(self, validated_data):
+    #     # Handle location creation manually
+    #     location_data = validated_data.pop('location')
+    #     category_data= validated_data.pop('category')
 
-      #Create location and category fields
-    def create(self, validated_data):
-        # Handle location creation manually
-        location_data = validated_data.pop('location')
-        category_data= validated_data.pop('category')
+    #     location, created = Location.objects.get_or_create(**location_data)
+    #     category, _ = Category.objects.get_or_create(name=category_data)
 
-        location, created = Location.objects.get_or_create(**location_data)
-        category, _ = Category.objects.get_or_create(name=category_data)
+    #     post = Post.objects.create(
+    #         location=location, category=category, **validated_data
+    #     )
+    #     return post
 
-        post = Post.objects.create(
-            location=location, category=category, **validated_data
-        )
-        return post
+    # # Update location and category fields
+    # def update(self, instance, validated_data):
+    #     location_data = validated_data.pop('location', None)
+    #     if location_data:
+    #         if instance.location:
+    #             # Update the existing location
+    #             Location.objects.filter(id=instance.location.id).update(**location_data)
+    #         else:
+    #             # Create a new location if there is no existing one
+    #             instance.location = Location.objects.create(**location_data)
+    #     else:
+    #         # Handle the case where no location data is provided
+    #         raise serializers.ValidationError("Location data is required.")
 
-    # Update location and category fields
-    def update(self, instance, validated_data):
-        location_data = validated_data.pop('location', None)
-        if location_data:
-            if instance.location:
-                # Update the existing location
-                Location.objects.filter(id=instance.location.id).update(**location_data)
-            else:
-                # Create a new location if there is no existing one
-                instance.location = Location.objects.create(**location_data)
-        else:
-            # Handle the case where no location data is provided
-            raise serializers.ValidationError("Location data is required.")
+    #     category_data = validated_data.pop('category', None)
+    #     if category_data:
+    #         category, created = Category.objects.get_or_create(name=category_data)
+    #         instance.category = category
 
-        category_data = validated_data.pop('category', None)
-        if category_data:
-            category, created = Category.objects.get_or_create(name=category_data)
-            instance.category = category
+    #     # Save and update
+    #     instance.save()
+    #     instance.refresh_from_db()
 
-        # Save and update
-        instance.save()
-        instance.refresh_from_db()
-
-        updated_instance = super().update(instance, validated_data)
-        return updated_instance
+    #     updated_instance = super().update(instance, validated_data)
+    #     return updated_instance
 
     def get_like_id(self, obj):
         user = self.context['request'].user

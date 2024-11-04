@@ -20,12 +20,13 @@ class Post(models.Model):
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    location = models.ForeignKey(
-        'locations.Location', on_delete=models.SET_NULL, null=True, blank=False
-    )
-    category = models.ForeignKey(
-        'categories.Category', on_delete=models.SET_NULL, null=True, blank=False
-    )
+    # Revisit after core functions are working
+    # location = models.ForeignKey(
+    #     'locations.Location', on_delete=models.SET_NULL, null=True, blank=False
+    # )
+    # category = models.ForeignKey(
+    #     'categories.Category', on_delete=models.SET_NULL, null=True, blank=False
+    # )
 
     class Meta:
         ordering = ['-created_at']

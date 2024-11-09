@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import Post
 # from locations.models import Location
-# from categories.models import Category
+from categories.models import Category
 from likes.models import Like
 # from locations.serializers import LocationSerializer
-# from categories.serializers import CategorySerializer
+from categories.serializers import CategorySerializer
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     # Revisit after core funtions are working
     # location = LocationSerializer()
-    # category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
+    category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
@@ -38,20 +38,20 @@ class PostSerializer(serializers.ModelSerializer):
         return request.user == obj.owner
     # Revisit after core functions are working
     #   #Create location and category fields
-    # def create(self, validated_data):
-    #     # Handle location creation manually
-    #     location_data = validated_data.pop('location')
-    #     category_data= validated_data.pop('category')
+    def create(self, validated_data):
+        # Handle location creation manually
+        # location_data = validated_data.pop('location')
+        category_data= validated_data.pop('category')
 
-    #     location, created = Location.objects.get_or_create(**location_data)
-    #     category, _ = Category.objects.get_or_create(name=category_data)
+        # location, created = Location.objects.get_or_create(**location_data)
+        category, _ = Category.objects.get_or_create(name=category_data)
 
-    #     post = Post.objects.create(
-    #         location=location, category=category, **validated_data
-    #     )
-    #     return post
+        post = Post.objects.create(
+            category=category, **validated_data #location=location, 
+        )
+        return post
 
-    # # Update location and category fields
+    # Update location and category fields
     # def update(self, instance, validated_data):
     #     location_data = validated_data.pop('location', None)
     #     if location_data:
@@ -65,17 +65,17 @@ class PostSerializer(serializers.ModelSerializer):
     #         # Handle the case where no location data is provided
     #         raise serializers.ValidationError("Location data is required.")
 
-    #     category_data = validated_data.pop('category', None)
-    #     if category_data:
-    #         category, created = Category.objects.get_or_create(name=category_data)
-    #         instance.category = category
+        category_data = validated_data.pop('category', None)
+        if category_data:
+            category, created = Category.objects.get_or_create(name=category_data)
+            instance.category = category
 
-    #     # Save and update
-    #     instance.save()
-    #     instance.refresh_from_db()
+        # Save and update
+        instance.save()
+        instance.refresh_from_db()
 
-    #     updated_instance = super().update(instance, validated_data)
-    #     return updated_instance
+        updated_instance = super().update(instance, validated_data)
+        return updated_instance
 
     def get_like_id(self, obj):
         user = self.context['request'].user
@@ -93,7 +93,7 @@ class PostSerializer(serializers.ModelSerializer):
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
             'title', 'image', 'content', 'created_at', 'updated_at',
             'like_id', 'comments_count', 'likes_count',
-            #'location', #'category', 
+            'category', #'location',
         ]
 
     

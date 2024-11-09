@@ -14,7 +14,9 @@ class PostSerializer(serializers.ModelSerializer):
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     # Revisit after core funtions are working
     # location = LocationSerializer()
-    category = serializers.ChoiceField(choices=Category.CATEGORY_CHOICES)
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all()
+    )
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()

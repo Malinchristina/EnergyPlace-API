@@ -14,7 +14,10 @@ class PostSerializer(serializers.ModelSerializer):
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
     # Revisit after core funtions are working
     # location = LocationSerializer()
-    category = CategorySerializer(read_only=True)
+    category = CategorySerializer(read_only=True) # Display full category details
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), source='category', write_only=True
+    )  # For filtering and setting category
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
@@ -93,7 +96,7 @@ class PostSerializer(serializers.ModelSerializer):
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
             'title', 'image', 'content', 'created_at', 'updated_at',
             'like_id', 'comments_count', 'likes_count',
-            'category', #'location',
+            'category', 'category_id', #'location',
         ]
 
     

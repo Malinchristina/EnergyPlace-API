@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from locations.models import Location
+from locations.models import Location
 from categories.models import Category
 
 
@@ -20,10 +20,9 @@ class Post(models.Model):
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # Revisit after core functions are working
-    # location = models.ForeignKey(
-    #     'locations.Location', on_delete=models.SET_NULL, null=True, blank=False
-    # )
+    location = models.ForeignKey(
+        'locations.Location', on_delete=models.SET_NULL, null=True, blank=True # Change to true later
+    )
     category = models.ForeignKey(
         'categories.Category',
         on_delete=models.SET_NULL,

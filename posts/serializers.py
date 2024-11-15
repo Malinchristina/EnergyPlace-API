@@ -62,8 +62,8 @@ class PostSerializer(serializers.ModelSerializer):
 
     # Update location and category fields
     def update(self, instance, validated_data):
-        location_data = validated_data.pop('location', None)
-        category_data = validated_data.pop('category', None)
+        location_data = validated_data.pop('location')
+        category_data = validated_data.pop('category')
 
         if location_data:
             location, _ = Location.objects.get_or_create(**location_data)

@@ -8,7 +8,7 @@ class LocationSerializer(serializers.ModelSerializer):
     Location serializer, references Location model.
     """
 
-    country = CountryField()
+    country = CountryField(country_code=True)
 
     class Meta:
         model = Location

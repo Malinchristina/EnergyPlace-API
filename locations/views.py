@@ -42,11 +42,14 @@ class LocationDetail(generics.RetrieveUpdateAPIView):
 @api_view(['GET'])
 def full_country_list(request):
     """
-    View to return the full list of countries.
+    View to return the full list of countries with unique IDs.
     """
-    full_country_list = [{
-        "code": code, "name": name} for code, name in countries]
+    full_country_list = [
+        {"id": index + 1, "code": code, "name": name} 
+        for index, (code, name) in enumerate(countries)
+    ]
     return Response(full_country_list)
+    
 
 @api_view(['GET'])
 def country_list(request):
@@ -64,10 +67,5 @@ def country_list(request):
         for code, name in countries 
         if code in existing_countries
     ]
-
-    # Add 'Unknown' manually if "ZZ" is in existing_countries
-    if "ZZ" in existing_countries:
-        country_list.append({"code": "ZZ", "name": "Unknown"})
-    
-    
+ 
     return Response(country_list)

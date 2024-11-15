@@ -17,7 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
     location = LocationSerializer(read_only=True)
     category = CategorySerializer(read_only=True) 
 
-     # For filtering and setting loaction and category
+     # For filtering and setting location and category
     location_id = serializers.PrimaryKeyRelatedField(
         queryset=Location.objects.all(), source='location', write_only=True
     )
@@ -35,7 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Image size too large.')
         if value.image.width > 4096:
             raise serializers.ValidationError(
-                'Image width largern than 4096px.'
+                'Image width larger than 4096px.'
             )
         if value.image.height > 4096:
             raise serializers.ValidationError(
@@ -49,29 +49,30 @@ class PostSerializer(serializers.ModelSerializer):
     
     #   #Create location and category fields
     def create(self, validated_data):
-        location_data = validated_data.pop('location')
-        category_data= validated_data.pop('category')
+        location_instance = validated_data.pop('location', None)
+        category_instance = validated_data.pop('category', None)
+        # category_data= validated_data.pop('category')
 
-        location, _ = Location.objects.get_or_create(**location_data)
-        category, _ = Category.objects.get_or_create(name=category_data)
+        # location, _ = Location.objects.get_or_create(**location_data)
+        # category, _ = Category.objects.get_or_create(name=category_data)
 
         post = Post.objects.create(
-            category=category, location=location, **validated_data
+            category=category_instance,
+            location=location_instance,
+            **validated_data
         )
         return post
 
     # Update location and category fields
     def update(self, instance, validated_data):
-        location_data = validated_data.pop('location')
-        category_data = validated_data.pop('category')
+        location_instance = validated_data.pop('location', None)
+        category_instance = validated_data.pop('category', None)
 
-        if location_data:
-            location, _ = Location.objects.get_or_create(**location_data)
-            instance.location = location
+        if location_instance:
+            instance.location = location_instance
 
-        if category_data:
-            category, _ = Category.objects.get_or_create(name=category_data)
-            instance.category = category
+        if category_instance:
+            instance.category = category_instance
 
         updated_instance = super().update(instance, validated_data)
         instance.refresh_from_db()

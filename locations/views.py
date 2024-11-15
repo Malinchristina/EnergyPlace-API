@@ -1,3 +1,8 @@
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django_countries import countries
+
+
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import Location
@@ -32,4 +37,37 @@ class LocationDetail(generics.RetrieveUpdateAPIView):
     """
     serializer_class = LocationSerializer
     queryset = Location.objects.all()
+
+
+@api_view(['GET'])
+def full_country_list(request):
+    """
+    View to return the full list of countries.
+    """
+    full_country_list = [{
+        "code": code, "name": name} for code, name in countries]
+    return Response(full_country_list)
+
+@api_view(['GET'])
+def country_list(request):
+    """
+    View to return a list of countries with existing posts.
+    """
+    # Get unique country codes from locations in the database
+    existing_countries = Location.objects.values_list(
+        'country', flat=True).distinct()
     
+    # Filter the full list of countries to include 
+    # only those in existing_countries
+    country_list = [
+        {"code": code, "name": name} 
+        for code, name in countries 
+        if code in existing_countries
+    ]
+
+    # Add 'Unknown' manually if "ZZ" is in existing_countries
+    if "ZZ" in existing_countries:
+        country_list.append({"code": "ZZ", "name": "Unknown"})
+    
+    
+    return Response(country_list)

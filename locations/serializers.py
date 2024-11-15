@@ -8,6 +8,8 @@ class LocationSerializer(serializers.ModelSerializer):
     Location serializer, references Location model.
     """
 
+    country = CountryField()
+
     class Meta:
         model = Location
         fields = ['id', 'name', 'country']

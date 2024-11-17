@@ -18,7 +18,7 @@ class LocationList(generics.ListCreateAPIView):
     serializer_class = LocationSerializer
     queryset = Location.objects.all()
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['country']
+    filterset_fields = ['country',]
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -57,8 +57,11 @@ def country_list(request):
     View to return a list of countries with existing posts.
     """
     # Get unique country codes from locations in the database
-    existing_countries = Location.objects.values_list(
-        'country', flat=True).distinct()
+    existing_countries = (
+        Location.objects.filter(post__isnull=False)  # Only locations with associated posts
+        .values_list('country', flat=True)
+        .distinct()
+    )
     
     # Filter the full list of countries to include 
     # only those in existing_countries

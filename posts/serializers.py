@@ -15,6 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     # Display full location and category details
     location = LocationSerializer(read_only=True)
+    locality = serializers.CharField(write_only=True, required=True)
     category = CategorySerializer(read_only=True) 
 
      # For filtering and setting location and category
@@ -50,11 +51,12 @@ class PostSerializer(serializers.ModelSerializer):
     #   #Create location and category fields
     def create(self, validated_data):
         location_instance = validated_data.pop('location', None)
+        locality = validated_data.pop('locality', None)
         category_instance = validated_data.pop('category', None)
-        # category_data= validated_data.pop('category')
-
-        # location, _ = Location.objects.get_or_create(**location_data)
-        # category, _ = Category.objects.get_or_create(name=category_data)
+        
+        if location_instance:
+            location_instance.locality = locality
+            location_instance.save()
 
         post = Post.objects.create(
             category=category_instance,
@@ -65,10 +67,14 @@ class PostSerializer(serializers.ModelSerializer):
 
     # Update location and category fields
     def update(self, instance, validated_data):
+        locality = validated_data.pop('locality', None)
         location_instance = validated_data.pop('location', None)
         category_instance = validated_data.pop('category', None)
 
         if location_instance:
+            if locality:
+                location_instance.locality = locality
+                location_instance.save()
             instance.location = location_instance
 
         if category_instance:
@@ -93,7 +99,7 @@ class PostSerializer(serializers.ModelSerializer):
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image',
             'title', 'image', 'content', 'created_at', 'updated_at',
             'like_id', 'comments_count', 'likes_count',
-            'category', 'category_id', 'location', 'location_id',
+            'category', 'category_id', 'location', 'location_id', 'locality',
         ]
 
     

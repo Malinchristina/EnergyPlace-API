@@ -7,10 +7,12 @@ class LocationSerializer(serializers.ModelSerializer):
     """
     Location serializer, references Location model.
     """
+    country_name = serializers.SerializerMethodField()
 
-    country = CountryField()
+    def get_country_name(self, obj):
+        return obj.country.name
 
     class Meta:
         model = Location
-        fields = ['id', 'name', 'country']
+        fields = ['id', 'locality', 'country', 'country_name']
 

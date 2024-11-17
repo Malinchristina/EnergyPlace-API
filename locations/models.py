@@ -5,10 +5,16 @@ from django_countries.fields import CountryField
 
 class Location(models.Model):
     """
-    Location model. Name is specific location name (e.g., city or landmark). 
+    Location model. Locality is specific location name (e.g., city or landmark). 
     """
-    name = models.CharField(max_length=100)
-    country = CountryField()
+    locality = models.CharField(max_length=100)
+    country = CountryField() # Country code e.g. SE
+
+    @property
+    def country_name(self):
+        return self.country.name #Get full country name e.g. Sweden
 
     def __str__(self):
-        return f'{self.name}, {self.country.name}'
+        if self.locality:
+            return f"{self.locality}, {self.country.name}"
+        return f"{self.country.name}"

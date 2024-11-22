@@ -9,6 +9,9 @@ from rest_framework.pagination import LimitOffsetPagination
 # Create your views here.
 
 class TopFivePagination(LimitOffsetPagination):
+    """
+    Custom pagination class for limiting posts to 5 by default.
+    """
     default_limit = 5  # Only return 5 posts by default
     max_limit = 5  # Ensure the max limit is 5
 
@@ -18,13 +21,12 @@ class PostList(generics.ListCreateAPIView):
     """
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = TopFivePagination
     queryset = Post.objects.annotate(
         comments_count=Count('comment', distinct=True),
         likes_count=Count('likes', distinct=True)
-    )
-    # .order_by('-likes_count', '-created_at')
-    # pagination_class = TopFivePagination
-
+    ).order_by('-created_at', '-likes_count')
+   
     filter_backends = [
         filters.OrderingFilter,
         filters.SearchFilter,
@@ -49,16 +51,11 @@ class PostList(generics.ListCreateAPIView):
         'likes_count',
     ]
 
-    pagination_class = None  # Default: no pagination
-
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.request.query_params.get('top_liked') == 'true':
             # Filter to include only posts with likes_count > 0
             queryset = queryset.filter(likes_count__gt=0)
-            # Limit the queryset to the top 5 posts based on
-            # likes_count and created_at
-            return queryset.order_by('-likes_count', '-created_at')[:5]
         return queryset
 
     def perform_create(self, serializer):

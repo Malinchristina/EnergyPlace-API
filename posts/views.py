@@ -42,7 +42,7 @@ class PostList(generics.ListCreateAPIView):
     search_fields = [
         'title',
         'owner__username',
-        'categories',
+        'category__name',
         'location__locality',
         'location__country',
     ]

@@ -15,7 +15,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     # Display full location and category details
     location = LocationSerializer(read_only=True)
-    locality = serializers.CharField(write_only=True, required=True)
+    locality = serializers.CharField(required=True)
     category = CategorySerializer(read_only=True) 
 
      # For filtering and setting location and category
@@ -61,6 +61,7 @@ class PostSerializer(serializers.ModelSerializer):
         post = Post.objects.create(
             category=category_instance,
             location=location_instance,
+            locality=locality,
             **validated_data
         )
         return post
@@ -71,17 +72,21 @@ class PostSerializer(serializers.ModelSerializer):
         location_instance = validated_data.pop('location', None)
         category_instance = validated_data.pop('category', None)
 
+        print("Incoming validated data:", validated_data)  # Print all incoming validated data
+        print("Locality received:", locality)  # Print the locality field to see if it's received
+        print("Location instance received:", location_instance)  # Print locati
+
         if location_instance:
-            if locality:
-                location_instance.locality = locality
-                location_instance.save()
             instance.location = location_instance
+        if locality is not None:
+            instance.locality = locality
 
         if category_instance:
             instance.category = category_instance
 
         updated_instance = super().update(instance, validated_data)
         instance.refresh_from_db()
+        print("Updated post instance:", updated_instance.locality) 
         return updated_instance
 
     def get_like_id(self, obj):

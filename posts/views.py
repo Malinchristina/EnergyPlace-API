@@ -53,23 +53,24 @@ class PostList(generics.ListCreateAPIView):
     ]
 
     def perform_create(self, serializer):
-        location_id = self.request.data.get('location_id')  # Get the selected location ID
-        locality = self.request.data.get('locality')  # Get the entered locality
+        location_id = self.request.data.get('location_id')  
+        locality = self.request.data.get('locality')  
 
         if not location_id:
-            raise serializers.ValidationError({'location_id': 'This field is required.'})
+            raise serializers.ValidationError({
+                'location_id': 'This field is required.'})
         if not locality:
-            raise serializers.ValidationError({'locality': 'This field is required.'})
+            raise serializers.ValidationError({
+                'locality': 'This field is required.'})
 
-        # Retrieve the location object using the ID
-        try:
-            location = Location.objects.get(id=location_id)
-        except Location.DoesNotExist:
-            raise serializers.ValidationError({'location_id': 'Invalid location ID.'})
+        location_instance = Location.objects.get(id=location_id) 
 
         # Save the post with the location and locality
-        serializer.save(owner=self.request.user, location=location, locality=locality)
-
+        serializer.save(
+            owner=self.request.user,
+            location=location_instance,
+            locality=locality,
+        )
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     """

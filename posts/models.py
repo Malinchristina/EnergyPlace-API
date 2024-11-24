@@ -10,14 +10,15 @@ class Post(models.Model):
     """
     Post model, references User model as owner.
     Default image is set to a placeholder image.
-    References Location and Category models.
+    References Location and Category models and
+    includes its own locality for specificity
     """
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     image = models.ImageField(
         upload_to='images/',
         default='../default_post_lskfrc',
-        blank=True #remove blank=True after testing
+        blank=False
     )
     content = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -26,7 +27,7 @@ class Post(models.Model):
         'locations.Location',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True # Change to true later
+        blank=True 
     )
     locality = models.CharField(max_length=100, blank=False)
     category = models.ForeignKey(

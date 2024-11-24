@@ -1,8 +1,9 @@
 from django.db.models import Count
-from rest_framework import generics, permissions, filters
+from rest_framework import generics, permissions, filters, serializers
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Post
+from locations.models import Location
 from .serializers import PostSerializer
 from rest_framework.pagination import LimitOffsetPagination
 
@@ -51,15 +52,23 @@ class PostList(generics.ListCreateAPIView):
         'likes_count',
     ]
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if self.request.query_params.get('top_liked') == 'true':
-            # Filter to include only posts with likes_count > 0
-            queryset = queryset.filter(likes_count__gt=0)
-        return queryset
-
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        location_id = self.request.data.get('location_id')  # Get the selected location ID
+        locality = self.request.data.get('locality')  # Get the entered locality
+
+        if not location_id:
+            raise serializers.ValidationError({'location_id': 'This field is required.'})
+        if not locality:
+            raise serializers.ValidationError({'locality': 'This field is required.'})
+
+        # Retrieve the location object using the ID
+        try:
+            location = Location.objects.get(id=location_id)
+        except Location.DoesNotExist:
+            raise serializers.ValidationError({'location_id': 'Invalid location ID.'})
+
+        # Save the post with the location and locality
+        serializer.save(owner=self.request.user, location=location, locality=locality)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):

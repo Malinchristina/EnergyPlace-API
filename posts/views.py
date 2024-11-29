@@ -1,5 +1,6 @@
 from django.db.models import Count
 from rest_framework import generics, permissions, filters, serializers
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Post
@@ -72,6 +73,14 @@ class PostList(generics.ListCreateAPIView):
             locality=locality,
         )
 
+    def create(self, request, *args, **kwargs):
+        """
+        Override the create method to include a success message.
+        """
+        response = super().create(request, *args, **kwargs)
+        response.data['detail'] = "Post created successfully."
+        return response
+
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve posts, edit and delete view for Post model as owner.
@@ -82,3 +91,11 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         comments_count=Count('comment', distinct=True),
         likes_count=Count('likes', distinct=True)
     ).order_by('-created_at')
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Override the delete method to include a success message.
+        """
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({"detail": "Post deleted successfully."}, status=200)

@@ -2,7 +2,7 @@
 
 This document details the architecture and functionality of the EnergyPlace API, a Django REST Framework (DRF) based backend providing services for the EnergyPlace frontend application.
 
-View the live [EnergyPlace App](https://energyplace-fe-44789d1db942.herokuapp.com/)
+View the live [EnergyPlace](https://energyplace-fe-44789d1db942.herokuapp.com/)
  application.
 
 <a name="top"></a>

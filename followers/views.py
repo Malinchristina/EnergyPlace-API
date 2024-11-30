@@ -5,6 +5,7 @@ from .serializers import FollowerSerializer
 
 # Create your views here.
 
+
 class FollowerList(generics.ListCreateAPIView):
     """
     List view for Follower model.
@@ -24,4 +25,3 @@ class FollowerDetail(generics.RetrieveDestroyAPIView):
     serializer_class = FollowerSerializer
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Follower.objects.all()
-

@@ -13,7 +13,6 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Like
         fields = ['id', 'owner', 'post', 'created_at']
 
-    
     def create(self, validated_data):
         """
         Create a new Like instance.

@@ -15,4 +15,3 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = ['id', 'country', 'country_name']
-

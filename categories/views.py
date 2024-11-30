@@ -6,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 
+
 class CategoryList(generics.ListCreateAPIView):
     """
     Category list view.
@@ -24,6 +25,7 @@ class CategoryList(generics.ListCreateAPIView):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
 
 class CategoryDetail(generics.RetrieveUpdateAPIView):
     """

@@ -4,6 +4,7 @@ from posts.models import Post
 
 # Create your models here.
 
+
 class Like(models.Model):
     """
     Like model, references User and Post models.
@@ -13,7 +14,7 @@ class Like(models.Model):
         Post, on_delete=models.CASCADE, related_name='likes'
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['-created_at']
         unique_together = ['owner', 'post']

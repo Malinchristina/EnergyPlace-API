@@ -42,4 +42,3 @@ class CommentDetailSerializer(CommentSerializer):
     Inherits from CommentSerializer.
     """
     post = serializers.ReadOnlyField(source='post.id')
-   

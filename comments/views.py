@@ -6,6 +6,7 @@ from .serializers import CommentSerializer, CommentDetailSerializer
 
 # Create your views here.
 
+
 class CommentList(generics.ListCreateAPIView):
     """
     List and create view for Comment model.
@@ -18,6 +19,7 @@ class CommentList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     """

@@ -12,6 +12,7 @@ def root_route(request):
         "message": "Welcome to my drf API for EnergyPlace!"
     })
 
+
 @api_view(['POST'])
 def logout_route(request):
     response = Response()

@@ -12,13 +12,13 @@ class PostSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
-    
+
     # Display full location and category details
     location = LocationSerializer(read_only=True)
     locality = serializers.CharField(required=True)
-    category = CategorySerializer(read_only=True) 
+    category = CategorySerializer(read_only=True)
 
-     # For filtering and setting location and category
+    # For filtering and setting location and category
     location_id = serializers.PrimaryKeyRelatedField(
         queryset=Location.objects.all(), source='location', write_only=True
     )
@@ -29,7 +29,6 @@ class PostSerializer(serializers.ModelSerializer):
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
-    
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
@@ -47,13 +46,13 @@ class PostSerializer(serializers.ModelSerializer):
     def get_is_owner(self, obj):
         request = self.context.get('request')
         return request.user == obj.owner
-    
+
     #   #Create location and category fields
     def create(self, validated_data):
         location_instance = validated_data.pop('location', None)
         locality = validated_data.pop('locality', None)
         category_instance = validated_data.pop('category', None)
-        
+
         if location_instance:
             location_instance.locality = locality
             location_instance.save()
@@ -72,10 +71,6 @@ class PostSerializer(serializers.ModelSerializer):
         location_instance = validated_data.pop('location', None)
         category_instance = validated_data.pop('category', None)
 
-        print("Incoming validated data:", validated_data)  # Print all incoming validated data
-        print("Locality received:", locality)  # Print the locality field to see if it's received
-        print("Location instance received:", location_instance)  # Print locati
-
         if location_instance:
             instance.location = location_instance
         if locality is not None:
@@ -86,7 +81,7 @@ class PostSerializer(serializers.ModelSerializer):
 
         updated_instance = super().update(instance, validated_data)
         instance.refresh_from_db()
-        print("Updated post instance:", updated_instance.locality) 
+        print("Updated post instance:", updated_instance.locality)
         return updated_instance
 
     def get_like_id(self, obj):
@@ -106,5 +101,3 @@ class PostSerializer(serializers.ModelSerializer):
             'like_id', 'comments_count', 'likes_count',
             'category', 'category_id', 'location', 'location_id', 'locality',
         ]
-
-    

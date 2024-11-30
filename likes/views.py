@@ -5,6 +5,7 @@ from .serializers import LikeSerializer
 
 # Create your views here.
 
+
 class LikeList(generics.ListCreateAPIView):
     """
     List view for Like model.
@@ -24,5 +25,3 @@ class LikeDetail(generics.RetrieveDestroyAPIView):
     serializer_class = LikeSerializer
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Like.objects.all()
-
-

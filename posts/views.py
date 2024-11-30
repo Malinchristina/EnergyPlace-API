@@ -10,12 +10,14 @@ from rest_framework.pagination import LimitOffsetPagination
 
 # Create your views here.
 
+
 class TopFivePagination(LimitOffsetPagination):
     """
     Custom pagination class for limiting posts to 5 by default.
     """
     default_limit = 5  # Only return 5 posts by default
     max_limit = 5  # Ensure the max limit is 5
+
 
 class PostList(generics.ListCreateAPIView):
     """
@@ -28,7 +30,7 @@ class PostList(generics.ListCreateAPIView):
         comments_count=Count('comment', distinct=True),
         likes_count=Count('likes', distinct=True)
     ).order_by('-created_at', '-likes_count')
-   
+
     filter_backends = [
         filters.OrderingFilter,
         filters.SearchFilter,
@@ -54,8 +56,8 @@ class PostList(generics.ListCreateAPIView):
     ]
 
     def perform_create(self, serializer):
-        location_id = self.request.data.get('location_id')  
-        locality = self.request.data.get('locality')  
+        location_id = self.request.data.get('location_id')
+        locality = self.request.data.get('locality')
 
         if not location_id:
             raise serializers.ValidationError({
@@ -64,7 +66,7 @@ class PostList(generics.ListCreateAPIView):
             raise serializers.ValidationError({
                 'locality': 'This field is required.'})
 
-        location_instance = Location.objects.get(id=location_id) 
+        location_instance = Location.objects.get(id=location_id)
 
         # Save the post with the location and locality
         serializer.save(
@@ -80,6 +82,7 @@ class PostList(generics.ListCreateAPIView):
         response = super().create(request, *args, **kwargs)
         response.data['detail'] = "Post created successfully."
         return response
+
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     """

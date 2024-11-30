@@ -27,7 +27,7 @@ class Post(models.Model):
         'locations.Location',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True 
+        blank=True
     )
     locality = models.CharField(max_length=100, blank=False)
     category = models.ForeignKey(

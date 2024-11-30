@@ -7,6 +7,7 @@ from .serializers import ProfileSerializer
 
 # Create your views here.
 
+
 class ProfileList(generics.ListAPIView):
     """
     List all profiles

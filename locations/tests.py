@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 # Create your tests here.
 
+
 class LocationAPITest(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='anna', password='12345')
@@ -34,7 +35,7 @@ class LocationAPITest(APITestCase):
             'name': 'New Location',
             'country': 'IE'
         },
-        format='json'
+            format='json'
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Location.objects.count(), 3)

@@ -25,7 +25,3 @@ class FollowerDetail(generics.RetrieveDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Follower.objects.all()
 
-    def get_object(self):
-        obj = super().get_object()
-        print(f"Request User: {self.request.user}, Object Owner: {obj.owner}")
-        return obj

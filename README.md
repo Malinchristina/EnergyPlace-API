@@ -42,6 +42,10 @@ View the live [EnergyPlace](https://energyplace-fe-44789d1db942.herokuapp.com/)
 - [Project Setup](#project-setup)
 - [Security](#security)
 - [Credits](#credits)
+  - [Tools & Programs](#tools-and-programs)
+  - [Inspiration](#inspiration)
+  - [How to](#how-to)
+  - [Acknowledgments](#acknowledgements)
 
 
 ## Introduction
@@ -82,7 +86,7 @@ The database schema for the application is illustrated using an Entity Relations
 <details>
   <summary>Click to view ERD</summary>
   
-  ![ERD](documentation/readme_images/erd.png)
+  ![ERD](documentation/readme_images/erd.jpg)
 </details> 
 
 ## API Models
@@ -248,8 +252,11 @@ The API uses **JSON Web Tokens (JWT)** for authentication, managed through `dj-r
 
 ## Testing
 
-### ADD
+### Validation
 
+To ensure the backend code adheres to PEP8 standards, the project was validated using [Code Institute's CI Python Linter](https://pep8ci.herokuapp.com/). This tool checks Python code for compliance with PEP8, the official style guide for Python.
+
+All Python files now pass PEP8 validation with no errors or warnings.
 
 ## Deployment
 
@@ -311,16 +318,29 @@ The API follows these security best practices:
 
 ## Credits
 
-- **Inspiration:**
-  - A lot of inspiration comes from Code Institutes Moments walkthrough project.
+### Tools & Programs
 
-- **How to**
-  - Better understand country_field: 
+- **Lucidchart:** Utilized to design the Entity-Relationship Diagram (ERD), offering a clear visualization of the database schema and the relationships between models.
+- **Git:** Employed for version control to track code changes and maintain the history of the project.
+- **GitHub:** Used as the repository hosting platform, enabling collaboration and tracking development progress.
+- **Heroku:** A cloud-based platform for deploying and hosting the application, ensuring smooth operation and accessibility.
+- **PostgreSQL:** The database system integrated into the application, managed through Heroku for scalability and reliability.
+- **Cloudinary:** Serves as the platform for media storage, handling image hosting and delivery efficiently.
+
+
+### Inspiration
+- A lot of inspiration comes from Code Institutes Moments walkthrough project.
+
+### How to
+- Better understand country_field: 
 [CountryField](https://stackoverflow.com/questions/70850703/how-to-serialize-a-countryfield-from-django-countries).
 - The project involved extensive research, trial and error, and reading resources from websites such as [W3schools](https://www.w3schools.com/), [MDN webdocs](https://developer.mozilla.org/en-US/), [Geeks for Geeks](https://www.geeksforgeeks.org/) and [Stack Overflow](https://stackoverflow.com/).
 
-- **Frameworks and Tools:**
-  - [Django REST Framework Documentation](https://www.django-rest-framework.org/)
-  - [Cloudinary](https://cloudinary.com/documentation)
+### Frameworks
+- [Django REST Framework Documentation](https://www.django-rest-framework.org/)
+
+### Acknowledgments
+- My mentor Gareth McGirr for support and guidance.
+- Thanks to the swedish community in Slack for support and testing.
 
 [Back to top](#top)

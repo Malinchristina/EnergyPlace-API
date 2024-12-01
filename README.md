@@ -9,11 +9,8 @@ View the live [EnergyPlace](https://energyplace-fe-44789d1db942.herokuapp.com/)
 
 ## Table of Contents
 
-- [Introduction](#introduction)
+- [EnergyPlace API: Backend Documentation](#energyplace-api-backend-documentation)
 - [Agile Methodologies](#agile-methodologies)
-  - [Kanban Board](#kanban-board)
-  - [Epics](#epics)
-  - [User Stories](#user-stories)
 - [Technologies Used](#technologies-used)
 - [Database Design](#database-design)
 - [API Models](#api-models)
@@ -36,6 +33,7 @@ View the live [EnergyPlace](https://energyplace-fe-44789d1db942.herokuapp.com/)
   - [Category Endpoints](#category-endpoints)
 - [Authentication](#authentication)
 - [Testing](#testing)
+  - [Validation](#validation)
 - [Deployment](#deployment)
     - [GitHub](#github)
     - [Heroku Deployment](#heroku-deployment)
@@ -54,17 +52,14 @@ The EnergyPlace API serves as the backend for a social platform where users can 
 
 ## Agile Methodologies
 
-Agile methodologies are used in this project to support iterative development and continuous improvement. By working in small, manageable increments and regularly reassessing priorities, Agile allows for flexibility and faster delivery of features. This approach also enables the integration of evolving requirements and feedback throughout the project, accommodating changes effectively
+An Agile workflow, managed using a [Kanban board](https://github.com/users/Malinchristina/projects/7), guided this project's iterative development. While [MoSCoW prioritization](https://en.wikipedia.org/wiki/MoSCoW_method) wasn't formally tracked on the Kanban board itself, this method was applied mentally throughout the user story development and task assignment process, with the following categorization:
 
-### Kanban board
+- **Must have:** User authentication, Post creation, Post display.
+- **Should have:** Commenting functionality, Liking functionality.
+- **Could have:** Advanced search filters, User profiles.
+- **Won't have (in this iteration):** Notifications, Map integration, FollowersList
 
-The Kanban board is used in this project to visualize and manage tasks. By organizing work into columns representing different stages (e.g., To Do, In Progress, Done), the Kanban board helps track progress and prioritize tasks efficiently.
-
-View the [board](https://github.com/users/Malinchristina/projects/7) for this project.
-
-### Epics
-
-### User stories
+Larger features were structured as epics, further decomposed into individual user stories for effective task management and progress tracking.
 
 ## Technologies Used
 
@@ -251,6 +246,124 @@ The database models define the structure and relationships of the data stored in
 The API uses **JSON Web Tokens (JWT)** for authentication, managed through `dj-rest-auth` and `allauth`. JWT cookies are used to maintain secure sessions.
 
 ## Testing
+
+### Epics & User Stories
+
+<details>
+  <summary>User Management API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/1)
+
+| TC ID   | US # | Title            | Pass as expected |
+|---------|------|------------------|------------------|
+| EPIC #1 |      |                  |                  |
+| TC1     | 7    | Create superuser | Yes              |
+| TC2     | 8    | Log in view      | Yes              |
+| TC3     | 36   | Log out view     | Yes              |
+
+</details>
+
+<details>
+  <summary>Profile API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/35)
+
+| TC ID    | US # | Title                  | Pass as expected |
+|----------|------|------------------------|------------------|
+| EPIC #35 |      |                        |                  |
+| TC4      | 31   | Detailed profile view  |                  |
+| TC5      | 32   | Edit profile           |                  |
+| TC6      | 33   | Change profile picture |                  |
+
+</details>
+
+<details>
+  <summary>Post API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/2)
+
+| TC ID   | US # | Title                  | Pass as expected |
+|---------|------|------------------------|------------------|
+| EPIC #2 |      |                        |                  |
+| TC7     | 10   | Create post            | Yes              |
+| TC8     | 11   | Edit & delete posts    | Yes              |
+| TC9     | 12   | View postlist          | Yes              |
+| TC10    | 16   | Add location to post   | Yes              |
+| TC11    | 18   | Add category to post   | Yes              |
+| TC12    | 46   | Location detail view   | Yes              |
+| TC13    | 48   | Category detailed view | Yes              |
+| TC14    | 49   | View Likes on Posts    | Yes              |
+
+</details>
+
+<details>
+  <summary>Follower Interaction API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/3)
+
+| TC ID   | US # | Title                      | Pass as expected |
+|---------|------|----------------------------|------------------|
+| EPIC #3 |      |                            |                  |
+| TC15    | 13   | Follow user                | Yes              |
+| TC16    | 14   | Unfollow user              | Yes              |
+| TC17    | 15   | View profile list          | Yes              |
+| TC18    | 50   | View followers on profiles | Yes              |
+
+</details>
+
+<details>
+  <summary>Location API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/4)
+
+| TC ID   | US # | Title              | Pass as expected |
+|---------|------|--------------------|------------------|
+| EPIC #4 |      |                    |                  |
+| TC19    | 17   | Filter by location | Yes              |
+| TC20    | 45   | Location list      | Yes              |
+
+</details>
+
+<details>
+  <summary>Category API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/5)
+
+| TC ID   | US # | Title              | Pass as expected |
+|---------|------|--------------------|------------------|
+| EPIC #5 |      |                    |                  |
+| TC21    | 19   | Filter by category | Yes              |
+| TC22    | 47   | Category list view | Yes              |
+
+</details>
+
+<details>
+  <summary>Comment API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/21)
+
+| TC ID    | US # | Title                   | Pass as expected |
+|----------|------|-------------------------|------------------|
+| EPIC #21 |      |                         |                  |
+| TC23     | 22   | Add comment on a post   | Yes              |
+| TC24     | 23   | Edit comments           | Yes              |
+| TC25     | 24   | Delete comments         | Yes              |
+| TC26     | 25   | View comments on a post | Yes              |
+
+</details>
+
+<details>
+  <summary>Like API</summary>
+
+  [GitHub Issue Link](https://github.com/Malinchristina/EnergyPlace-API/issues/30)
+
+| TC ID    | US # | Title       | Pass as expected |
+|----------|------|-------------|------------------|
+| EPIC #30 |      |             |                  |
+| TC27     | 26   | Likelist    | Yes              |
+| TC28     | 27   | Unlike post | Yes              |
+
+</details>
 
 ### Validation
 

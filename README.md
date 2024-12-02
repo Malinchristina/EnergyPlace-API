@@ -5,6 +5,8 @@ This document details the architecture and functionality of the EnergyPlace API,
 View the live [EnergyPlace](https://energyplace-fe-44789d1db942.herokuapp.com/)
  application.
 
+View [frontend](https://github.com/Malinchristina/energyplace-frontend).
+
 <a name="top"></a>
 
 ## Table of Contents

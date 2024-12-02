@@ -371,6 +371,126 @@ To ensure the backend code adheres to PEP8 standards, the project was validated 
 
 All Python files now pass PEP8 validation with no errors or warnings.
 
+### Automated Tests
+
+The project includes automated tests to ensure the functionality and correctness of the API. Below are details of the tests. Running tests, came back with status OK.
+
+<details>
+  <summary>Location API Tests</summary>
+
+  ### Location API Tests
+
+  #### `LocationAPITest`
+  This test suite is responsible for testing the `Location` API endpoints.
+
+  1. **Test Setup**  
+     - A test user (`anna`) is created and logged in.
+     - Two `Location` instances are created for testing: one with the country `SE` (Sweden) and another with the country `PS` (Palestine).
+
+  2. **Test: `test_list_locations`**  
+     - **Purpose**: Test that all locations are returned correctly.
+     - **Logic**: The `/locations/` endpoint is called. The test checks:
+       - The status code is `200 OK`.
+       - The correct number of locations are returned.
+       - The country names are as expected: `Sweden` and `Palestine, State of`.
+
+  3. **Test: `test_list_locations_filter`**  
+     - **Purpose**: Test that the `/locations/` endpoint can be filtered by country code.
+     - **Logic**: The `/locations/?country=SE` endpoint is called. The test checks:
+       - The status code is `200 OK`.
+       - Only one location is returned (`Sweden`).
+
+  4. **Test: `test_create_location`**  
+     - **Purpose**: Test that a new location can be created.
+     - **Logic**: The `/locations/` endpoint is called with a POST request to create a location for `IE` (Ireland). The test checks:
+       - The status code is `201 CREATED`.
+       - The number of locations in the database increases by 1.
+       - The last location's country is `Ireland`.
+
+</details>
+
+<details>
+  <summary>Post API Tests</summary>
+
+  ### Post API Tests
+
+  #### `PostListviewTest`
+  This test suite is responsible for testing the `Post` API endpoints.
+
+  1. **Test Setup**  
+     - A test user (`anna`) is created and logged in.
+     - A `Location` instance for `SE` and a `Category` instance for `Nature` are created.
+     - Two `Post` instances are created: one owned by `anna` and another by `bill`.
+
+  2. **Test: `test_list_posts`**  
+     - **Purpose**: Test that posts are listed correctly.
+     - **Logic**: The `/posts/` endpoint is called. The test checks:
+       - The status code is `200 OK`.
+       - The correct number of posts is returned.
+
+  3. **Test: `test_loggedin_user_can_create_post`**  
+     - **Purpose**: Test that a logged-in user can create a post.
+     - **Logic**: The test user (`anna`) logs in, then the `/posts/` endpoint is called to create a post. The test checks:
+       - The status code is `201 CREATED`.
+       - The post count increases by 1.
+
+  4. **Test: `test_not_loggedin_user_cant_create_post`**  
+     - **Purpose**: Test that a non-logged-in user cannot create a post.
+     - **Logic**: The test ensures that an unauthenticated user receives a `403 FORBIDDEN` status when attempting to create a post.
+
+  5. **Test: `test_retrieve_post_with_valid_id`**  
+     - **Purpose**: Test that a valid post can be retrieved by its ID.
+     - **Logic**: The `/posts/1/` endpoint is called. The test checks:
+       - The status code is `200 OK`.
+       - The post details are returned correctly.
+
+  6. **Test: `test_retrieve_post_with_invalid_id`**  
+     - **Purpose**: Test that an invalid post ID returns a `404 NOT FOUND` status.
+     - **Logic**: The `/posts/100/` endpoint is called. The test checks:
+       - The status code is `404 NOT FOUND`.
+
+  7. **Test: `test_loggedin_user_can_update_own_post`**  
+     - **Purpose**: Test that a logged-in user can update their own post.
+     - **Logic**: The test user (`anna`) logs in, then the `/posts/1/` endpoint is called with updated post data. The test checks:
+       - The status code is `200 OK`.
+       - The post title and content are updated correctly.
+
+  8. **Test: `test_loggedin_user_cant_update_others_post`**  
+     - **Purpose**: Test that a user cannot update another user's post.
+     - **Logic**: The test user (`anna`) logs in and tries to update `bill`'s post. The test checks:
+       - The status code is `403 FORBIDDEN`.
+
+</details>
+
+<details>
+  <summary>Profile API Tests</summary>
+
+  ### Profile API Tests
+
+  #### `ProfileTestCase`
+  This test suite is responsible for testing the `Profile` API endpoints.
+
+  1. **Test Setup**  
+     - A test user (`anna`) is created and logged in.
+
+  2. **Test: `test_create_profile`**  
+     - **Purpose**: Test if a profile is created when a user is created.
+     - **Logic**: The `/profiles/{user.profile.id}/` endpoint is called. The test checks:
+       - The status code is `200 OK`.
+       - The profile owner's username and name are correct.
+
+  3. **Test: `test_update_profile`**  
+     - **Purpose**: Test if a user can update their profile content (bio).
+     - **Logic**: The test ensures the user can update their profile content and name.
+
+  4. **Test: `test_profile_image`**  
+     - **Purpose**: Test if the profile image can be updated.
+     - **Logic**: The test uploads a new profile image and verifies:
+       - The status code is `200 OK`.
+       - The response contains the updated image URL.
+
+</details>
+
 ## Deployment
 
 ### GitHub

@@ -508,6 +508,15 @@ The steps to deploy in Heroku:
 
 1. Log in to Heroku
 2. Create new app
+
+      <details>
+      <summary>Create app</summary>
+  
+      ![Create app](documentation/readme_images/create_app_be.png)
+  
+      </details>
+      <br>
+
 3. In settings, press Reveal Config Vars and add relevant config vars.  
    <details>
      <summary>Configuration Variables</summary>
@@ -519,6 +528,15 @@ The steps to deploy in Heroku:
 
 4. Scroll down to add buildpack heroku/python
 5. In Deploy connect to GitHub and find the repository
+
+      <details>
+      <summary>Connect</summary>
+  
+      ![Connect](documentation/readme_images/connect_repo_be.png)
+  
+      </details>
+      <br>
+
 6. Scroll down and connect, in this case, manually on Deploy Branch.
 7. Click open app to view the deployed app
 

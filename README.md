@@ -271,9 +271,9 @@ The API uses **JSON Web Tokens (JWT)** for authentication, managed through `dj-r
 | TC ID    | US # | Title                  | Pass as expected |
 |----------|------|------------------------|------------------|
 | EPIC #35 |      |                        |                  |
-| TC4      | 31   | Detailed profile view  |                  |
-| TC5      | 32   | Edit profile           |                  |
-| TC6      | 33   | Change profile picture |                  |
+| TC4      | 31   | Detailed profile view  | Yes              |
+| TC5      | 32   | Edit profile           | Yes              |
+| TC6      | 33   | Change profile picture | Yes              |
 
 </details>
 
@@ -392,7 +392,7 @@ The steps to deploy in Heroku:
    <details>
      <summary>Configuration Variables</summary>
 
-     ![Configuration Variables](readme_images/config_vars_be.jpg)
+     ![Configuration Variables](documentation/readme_images/config_vars_be.jpg)
 
    </details>
 <br>
